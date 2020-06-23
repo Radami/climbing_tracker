@@ -1,0 +1,20 @@
+<h1>{{ session.center }}</h1>
+<h2>{{ session.date }}</h2>
+<hr \>
+<h3> Rating: {{ session.rating }} </h3>
+<h3>Climbs</h3>
+<ul>
+    {% for climb in session.climb_set.all %}
+        <li>{{ climb }}</l1>
+    {% endfor %}
+</ul>
+
+<form action="{% url 'journal:rate_session' session.id %}" method="post">
+{% csrf_token %}
+
+<input type="range" id="rating" name="rating" min="1" max="10" 
+        oninput="document.getElementById('ratingLabel').innerHTML = this.value;">
+<em id="ratingLabel">{{ session.rating }}</em>
+
+<input type="submit" value="Rate">
+</form>

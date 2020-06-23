@@ -1,0 +1,11 @@
+
+{% if latest_sessions %}
+    <ul>
+    {% for session in latest_sessions %}
+        <li><a href={% url 'journal:detail' session.id %}>{{ session }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No sessions are available.</p>
+{% endif %}
+
