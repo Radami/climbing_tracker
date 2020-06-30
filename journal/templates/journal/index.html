@@ -1,4 +1,11 @@
+<!DOCTYPE html>
+{% load static %}
 
+<link rel="stylesheet" type="text/css" href="{% static 'journal/style.css' %}">
+
+<!-- <body style="background-image: url({% static 'images/logo.jpg' %});">
+-->
+<body>
 {% if latest_sessions %}
     <ul>
     {% for session in latest_sessions %}
@@ -8,4 +15,6 @@
 {% else %}
     <p>No sessions are available.</p>
 {% endif %}
+
+</body>
 

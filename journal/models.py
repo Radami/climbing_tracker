@@ -17,7 +17,8 @@ class Session(models.Model):
     rating = models.IntegerField(default=0)
 
     def was_recorded_recently(self):
-        return self.date >= timezone.now() - datetime.timedelta(days=1)
+        now = timezone.now()
+        return now - datetime.timedelta(days=5) <= self.date <= now
 
     def __str__(self):
         return self.center + " on " + str(self.date)
