@@ -1,19 +1,33 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views import generic
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
-from rest_framework import viewsets
+from rest_framework import status
+from rest_framework.parsers import JSONParser
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 from .serializers import SessionSerializer, ClimbSerializer, GradeSerializer
 from .models import Session
 
-class SessionViewSet(viewsets.ModelViewSet):
+@api_view(['GET', 'POST'])
+def session_list(request):
     """
     API endpoint that allows sessions to be viewed or edited.
     """
-    queryset = Session.objects.all().order_by('-date')
-    serializer_class = SessionSerializer
+    if request.method == 'GET':
+        queryset = Session.objects.all().order_by('-date')
+        serializer_class = SessionSerializer(queryset, many=True)
+        return JsonResponse(serializer_class.data, safe=False)
+
+    elif request.method == 'POST':
+        serializer = SessionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Create your views here.
 class IndexView(generic.ListView):
