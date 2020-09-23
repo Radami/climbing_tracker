@@ -3,7 +3,17 @@ from django.shortcuts import get_object_or_404, render
 from django.views import generic
 from django.urls import reverse
 
+from rest_framework import viewsets
+
+from .serializers import SessionSerializer, ClimbSerializer, GradeSerializer
 from .models import Session
+
+class SessionViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows sessions to be viewed or edited.
+    """
+    queryset = Session.objects.all().order_by('-date')
+    serializer_class = SessionSerializer
 
 # Create your views here.
 class IndexView(generic.ListView):
