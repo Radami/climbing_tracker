@@ -1,12 +1,9 @@
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse, Http404
-from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseRedirect, Http404
+from django.shortcuts import get_object_or_404
 from django.views import generic
 from django.urls import reverse
-from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework import status
-from rest_framework.parsers import JSONParser
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -18,11 +15,17 @@ class SessionList(APIView):
     List all climbing sessions or create a new one
     """
     def get(self, request, format=None):
+        """
+        GET method for Sessions
+        """
         sessions = Session.objects.all().order_by('-date')
         serializer = SessionSerializer(sessions, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
+        """
+        POST method for Sessions
+        """
         serializer = SessionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -33,18 +36,27 @@ class SessionDetails(APIView):
     """
     Retrieve, update or delete a session
     """
-    def get_object(self, pk):
+    def get_object(self, primary_key):
+        """
+        Retrieve the object with the specified pk
+        """
         try:
-            return Session.objects.get(pk=pk)
+            return Session.objects.get(pk=primary_key)
         except Session.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):
+        """
+        GET method for Sessions Details
+        """
         session = self.get_object(pk)
         serializer = SessionSerializer(session)
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
+        """
+        PUT method for Sessions
+        """
         session = self.get_object(pk)
         serializer = SessionSerializer(session, data=request.data)
         if serializer.is_valid():
@@ -53,6 +65,9 @@ class SessionDetails(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
+        """
+        DELETE method for Sessions
+        """
         session = self.get_object(pk)
         session.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
