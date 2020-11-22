@@ -2,18 +2,25 @@ from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404
 from django.views import generic
 from django.urls import reverse
+from django.contrib.auth.models import User
 
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializers import SessionSerializer, ClimbSerializer, GradeSerializer
-from .models import Session
+from .serializers import SessionSerializer, UserSerializer, ClimbSerializer
+
+from .models import Session, Climb
+
 
 class SessionList(APIView):
     """
     List all climbing sessions or create a new one
     """
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
     def get(self, request, format=None):
         """
         GET method for Sessions
@@ -28,7 +35,7 @@ class SessionList(APIView):
         """
         serializer = SessionSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(owner=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -72,6 +79,17 @@ class SessionDetails(APIView):
         session.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class ClimbList(generics.ListAPIView):
+    queryset = Climb.objects.all()
+    serializer_class = ClimbSerializer
+
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 # @api_view(['GET', 'POST'])
 # def session_list(request, format=None):
