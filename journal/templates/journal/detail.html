@@ -4,7 +4,7 @@
 <h3> Rating: {{ session.rating }} </h3>
 <h3>Climbs</h3>
 <ul>
-    {% for climb in session.climb_set.all %}
+    {% for climb in climbs.all %}
         <li>{{ climb }}</l1>
     {% endfor %}
 </ul>
