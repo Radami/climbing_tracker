@@ -33,4 +33,4 @@ class Climb(models.Model):
     owner = models.ForeignKey('auth.User', related_name='user_climbs',on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.grade) + " - " + self.comments
+        return str(self.grade) + " - " + self.comments + " : " + str(self.rating)
