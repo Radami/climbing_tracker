@@ -7,6 +7,7 @@ app_name = 'journal'
 urlpatterns = [
     path('', views.SessionsIndexView.as_view(), name='index'),
     path('<int:pk>/', views.SessionsDetailView.as_view(), name='detail'),
+    path('add_session', views.add_session, name='add_session'),
     path('<int:session_id>/rate', views.rate, name='rate_session'),
     
     path('api/sessions/', api_views.SessionList.as_view()),

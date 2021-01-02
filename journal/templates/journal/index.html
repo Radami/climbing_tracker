@@ -48,6 +48,20 @@
                     <p>No sessions are available.</p>
                 {% endif %}
             </div>
+
+            <div class="container-md">
+              <form action="{% url 'journal:add_session' %}" method="post">
+                {% csrf_token %}
+                <label>Center</label>
+                <input type="text" id="center" name="center">
+                <label>Date</label>
+                <input type="date" id="date" name="date">
+                <label>Rating</label>
+                <input type="rating" id="rating" name="rating">
+    
+                <input type="submit" value="Add">
+            </form>
+            </div>
         </main>
     </body>
 </html>

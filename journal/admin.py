@@ -12,7 +12,7 @@ class ClimbInline(admin.TabularInline):
 
 class SessionAdmin(admin.ModelAdmin):
     fieldsets = [
-        ('Date information', {'fields' : ['date', 'center']}),
+        ('Date information', {'fields' : ['date', 'center', 'owner']}),
         ('Session information', {'fields' : ['rating']})
     ]
     inlines = [ClimbInline]

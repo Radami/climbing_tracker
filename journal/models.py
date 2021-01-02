@@ -22,7 +22,7 @@ class Session(models.Model):
         return now - datetime.timedelta(days=5) <= self.date <= now
 
     def __str__(self):
-        return self.center + " on " + str(self.date)
+        return self.center + " on " + str(self.date.date())
 
 
 class Climb(models.Model):

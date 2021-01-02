@@ -12,7 +12,7 @@ class SessionsIndexView(generic.ListView):
 
     def get_queryset(self):
         """Return the last five climbing sessions"""
-        return Session.objects.order_by('date')[:5]
+        return Session.objects.order_by('-date')[:5]
 
 
 class SessionsDetailView(generic.DetailView):
@@ -33,6 +33,22 @@ def rate(request, session_id):
 
     rating = request.POST['rating']
     session.rating = rating
+    session.save()
+
+    return HttpResponseRedirect(reverse('journal:detail', args=(session.id,)))
+
+def add_session(request):
+    session = Session()
+
+    center = request.POST['center']
+    rating = request.POST['rating']
+    date = request.POST['date']
+
+    session.center = center
+    session.rating = rating
+    session.date = date
+    session.owner_id = request.user.id
+
     session.save()
 
     return HttpResponseRedirect(reverse('journal:detail', args=(session.id,)))
