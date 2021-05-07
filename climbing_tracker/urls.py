@@ -24,7 +24,9 @@ from journal import views
 
 urlpatterns = [
     #path('', include(router.urls)),
-    path('journal/', include('journal.urls')),
+    path('journal/', include('journal.urls'), name='journal'),
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+
 ]

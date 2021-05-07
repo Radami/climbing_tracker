@@ -1,12 +1,20 @@
 from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.views import generic
 from django.urls import reverse
+
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 
 from .models import Session, Climb
 
 # Django views
 class SessionsIndexView(generic.ListView):
+    '''
+        Class based Index View for Sessions
+    '''
     template_name = 'journal/index.html'
     context_object_name = 'latest_sessions'
 
@@ -52,6 +60,18 @@ def add_session(request):
     session.save()
 
     return HttpResponseRedirect(reverse('journal:detail', args=(session.id,)))
+
+def sign_up(request):
+    context = {}
+    form = UserCreationForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return render(request, 'journal/index.html')
+    context['form'] = form
+    return render(request, 'registration/sign_up.html', context)
+
 
 # Method based views
 # def index(request):

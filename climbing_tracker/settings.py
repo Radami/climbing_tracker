@@ -125,6 +125,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+LOGIN_REDIRECT_URL = '/journal'
 
 # REST API
 REST_FRAMEWORK = {
