@@ -90,6 +90,13 @@ def add_climb(request):
 
     return HttpResponseRedirect(reverse('journal:detail', args=(climb.session_id,)))
 
+def delete_climb(request):
+    #TODO: validate permissions
+    climb = Climb.objects.get(id=request.POST['climb_id'])
+    climb.delete()
+
+    return HttpResponseRedirect(reverse('journal:detail', args=(climb.session_id,)))
+
 # Method based views
 # def index(request):
 #     latest_sessions = Session.objects.order_by('date')[:5]

@@ -68,6 +68,14 @@
                                 <td>{{ climb.grade }}</td>
                                 <td>{{ climb.rating }}</td>
                                 <td>{{ climb.comments }}</td>
+                                <td>
+                                    <form action="{% url 'journal:delete_climb' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" id="climb_id" name="climb_id" value="{{ climb.id }}">
+                                        <input type="hidden" id="session_id" name="session_id" value="{{ session.id }}">
+                                        <input type="submit" value="Delete">
+                                    </form>
+                                </td>
                             <tr>
                         {% endfor %}
                         </tbody>

@@ -4,7 +4,7 @@ from .models import Grade, Climb, Session
 
 # Register your models here.
 admin.site.register(Grade)
-# admin.site.register(Climb)
+admin.site.register(Climb)
 
 class ClimbInline(admin.TabularInline):
     model = Climb

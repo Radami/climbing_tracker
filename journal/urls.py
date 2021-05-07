@@ -9,7 +9,8 @@ urlpatterns = [
     path('', login_required(views.SessionsIndexView.as_view()), name='index'),
     path('<int:pk>/', views.SessionsDetailView.as_view(), name='detail'),
     path('add_session', views.add_session, name='add_session'),
-    path('add_clib', views.add_climb, name='add_climb'),
+    path('add_climb', views.add_climb, name='add_climb'),
+    path('delete_climb', views.delete_climb, name='delete_climb'),
     path('<int:session_id>/rate', views.rate, name='rate_session'),
     path('sign_up/', views.sign_up, name="sign-up"),
 
