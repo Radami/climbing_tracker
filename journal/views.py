@@ -1,14 +1,15 @@
+'''
+Views for climbing journal app
+'''
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 from django.views import generic
 from django.urls import reverse
-
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 
-from .models import Session, Climb
+from .models import Session, Climb, Grade
 
 # Django views
 class SessionsIndexView(generic.ListView):
@@ -72,6 +73,22 @@ def sign_up(request):
     context['form'] = form
     return render(request, 'registration/sign_up.html', context)
 
+def add_climb(request):
+    #TODO: validation on user and session
+   
+    climb = Climb()
+
+    grade_label = request.POST['grade']
+    climb.grade =  Grade.objects.get(label=grade_label)
+    climb.comments = request.POST['comments']
+    climb.rating = request.POST['rating']
+    session_id = request.POST['session']
+    climb.session = Session.objects.get(id=session_id)
+    climb.owner_id = request.user.id
+
+    climb.save()
+
+    return HttpResponseRedirect(reverse('journal:detail', args=(climb.session_id,)))
 
 # Method based views
 # def index(request):

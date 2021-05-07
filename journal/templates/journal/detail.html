@@ -74,6 +74,22 @@
                     </table>
                 </div>
             </div>
+
+            <div class="container-md">
+                <form action="{% url 'journal:add_climb' %}" method="post">
+                  {% csrf_token %}
+                  <label>Grade</label>
+                  <input type="text" id="grade" name="grade">
+                  <label>Comments</label>
+                  <input type="text" id="comments" name="comments">
+                  <label>Rating</label>
+                  <input type="number" id="rating" name="rating">
+                  <input type="hidden" id="session" name="session" value="{{ session.id }}">
+
+
+                  <input type="submit" value="Add">
+              </form>
+              </div>
         </main>
     </body>
 </html>
