@@ -56,7 +56,7 @@ def add_session(request):
     session.center = center
     session.rating = rating
     session.date = date
-    session.owner_id = request.user.id
+    session.owner_id = request.user.id 
 
     session.save()
 
@@ -84,6 +84,8 @@ def add_climb(request):
     session_id = request.POST['session']
     climb.session = Session.objects.get(id=session_id)
     climb.owner_id = request.user.id
+    climb.climb_type = request.POST['climb_type']
+    climb.takes = request.POST['takes']
 
     climb.save()
 
