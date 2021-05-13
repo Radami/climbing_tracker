@@ -1,0 +1,1 @@
+web: gunicorn climbing_tracker.wsgi --log-file -
