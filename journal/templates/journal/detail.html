@@ -51,12 +51,16 @@
                             <col class="col-md-1">
                             <col class="col-md-1">
                             <col class="col-md-1">
-                            <col class="col-md-9">
+                            <col class="col-md-1">
+                            <col class="col-md-1">
+                            <col class="col-md-6">
                         </colgroup>
                         <thead>
                             <tr>
                                 <th>#</th>
                                 <th>Grade</th>
+                                <th>Type</th>
+                                <th>Takes</th>
                                 <th>Rating</th>
                                 <th>Comments</th>
                             </tr>
@@ -66,6 +70,8 @@
                             <tr>
                                 <td>{{ forloop.counter }}</td>
                                 <td>{{ climb.grade }}</td>
+                                <td>{{ climb.climb_type }}</td>
+                                <td>{{ climb.takes }}</td>
                                 <td>{{ climb.rating }}</td>
                                 <td>{{ climb.comments }}</td>
                                 <td>
@@ -93,7 +99,10 @@
                   <label>Rating</label>
                   <input type="number" id="rating" name="rating">
                   <input type="hidden" id="session" name="session" value="{{ session.id }}">
-
+                  <label>Type</label>
+                  <input type="text" id="climb_type" name="climb_type">
+                  <label>Takes</label>
+                  <input type="number" id="takes" name="takes">
 
                   <input type="submit" value="Add">
               </form>

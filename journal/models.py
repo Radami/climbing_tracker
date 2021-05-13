@@ -31,6 +31,8 @@ class Climb(models.Model):
     rating = models.IntegerField(default=0)
     session = models.ForeignKey(Session, related_name='climbs', on_delete=models.CASCADE)
     owner = models.ForeignKey('auth.User', related_name='user_climbs',on_delete=models.CASCADE)
+    climb_type = models.CharField(max_length=20, default="Flash")
+    takes = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.grade) + " - " + self.comments + " : " + str(self.rating)

@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import pathlib
 import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -27,7 +26,8 @@ SECRET_KEY = '_ql^+60vzxg%8eku@a&xtot#7t^u0si@&(0)^s)=16nad-#$t9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['whispering-plateau-54906.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1',
+                 'whispering-plateau-54906.herokuapp.com']
 
 
 # Application definition

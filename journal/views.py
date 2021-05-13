@@ -75,7 +75,6 @@ def sign_up(request):
 
 def add_climb(request):
     #TODO: validation on user and session
-   
     climb = Climb()
 
     grade_label = request.POST['grade']
