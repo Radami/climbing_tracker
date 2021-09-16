@@ -33,6 +33,7 @@ class SessionsDetailView(generic.DetailView):
         context = super(SessionsDetailView, self).get_context_data(**kwargs)
         # Add climbs related to this session
         session = Session.objects.get(id=self.kwargs['pk'])
+        context['grades'] = Grade.objects.all()
         context['climbs'] = session.climbs.all()
         return context
 

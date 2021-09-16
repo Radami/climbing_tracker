@@ -90,21 +90,33 @@
             </div>
 
             <div class="container-md">
-                <form action="{% url 'journal:add_climb' %}" method="post">
-                  {% csrf_token %}
-                  <label>Grade</label>
-                  <input type="text" id="grade" name="grade">
-                  <label>Comments</label>
-                  <input type="text" id="comments" name="comments">
-                  <label>Rating</label>
-                  <input type="number" id="rating" name="rating">
-                  <input type="hidden" id="session" name="session" value="{{ session.id }}">
-                  <label>Type</label>
-                  <input type="text" id="climb_type" name="climb_type">
-                  <label>Takes</label>
-                  <input type="number" id="takes" name="takes">
-
-                  <input type="submit" value="Add">
+                <form id="add_climb" action="{% url 'journal:add_climb' %}" method="post">
+                    {% csrf_token %}
+                    <label for="grade">Grade</label>
+                    <select id="grade" name="grade" form="add_climb">
+                    {% for grade in grades.all %}
+                        <option value="{{ grade.label }}">{{ grade.label }}</option>
+                    {% endfor %}
+                    </select>
+                    <label for="climb_type">Type</label>
+                    <select id="climb_type" name="climb_type">
+                        <option value="Flash">Flash</option> 
+                        <option value="Redpoint">Redpoint</option>
+                        <option value="Dogged">Dogged</option>
+                        <option value="Failed">Failed</option>
+                    </select>
+                    <label for="rating">Rating</label>
+                    <select id="rating" name="rating" form="add_climb">
+                        <option value="1">1</option><option value="2">2</option><option value="3">3<option value="4">4</option><option value="5">5</option>
+                        <option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option>
+                    </select>
+                    <input type="hidden" id="session" name="session" value="{{ session.id }}">
+                    
+                    <label for="takes">Takes</label>
+                    <input type="number" id="takes" name="takes" min="0" value="0">
+                    <label for="comments">Comments</label>
+                    <input type="text" id="comments" name="comments">  
+                    <input type="submit" value="Add">
               </form>
               </div>
         </main>
