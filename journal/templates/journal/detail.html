@@ -27,9 +27,21 @@
             <div class="container-md">
                 <div class="row">
                     <div class="col-sm-8">
+                        <h3>Partners: 
+                            {% for partner in partners.all %}
+                                {{ partner.displayName }} 
+                            {% endfor %}
+                        </h3>
+                        <form action="{% url 'journal:add_partner' session.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="text" id="displayName" name="displayName">  
+                            <input type="submit" value="Add">
+                        </form>
+                    </div>
+                    <div class="col-sm-2">
                         <h3> Rating: {{ session.rating }} </h3>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-2">
                         <form action="{% url 'journal:rate_session' session.id %}" method="post">
                             {% csrf_token %}
                 
@@ -40,6 +52,9 @@
                             <input type="submit" value="Rate">
                         </form>
                     </div>
+                </div>
+                <div class="row">
+                    
                 </div>
             </div>
             

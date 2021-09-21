@@ -12,6 +12,7 @@ urlpatterns = [
     path('add_climb', views.add_climb, name='add_climb'),
     path('delete_climb', views.delete_climb, name='delete_climb'),
     path('<int:session_id>/rate', views.rate, name='rate_session'),
+    path('<int:session_id>/add_partners', views.add_partner, name='add_partner'),
     path('sign_up/', views.sign_up, name="sign-up"),
 
     path('api/sessions/', api_views.SessionList.as_view()),

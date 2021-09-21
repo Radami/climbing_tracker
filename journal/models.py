@@ -24,10 +24,13 @@ class Session(models.Model):
     def __str__(self):
         return self.center + " on " + str(self.date.date())
 
+class SessionPartner(models.Model):
+    session = models.ForeignKey(Session, related_name="partners", on_delete=models.CASCADE)
+    displayName = models.CharField(max_length=50)
 
 class Climb(models.Model):
     grade =  models.ForeignKey(Grade, on_delete=models.CASCADE)
-    comments = models.CharField(max_length=250)
+    comments = models.CharField(max_length=250, default=None)
     rating = models.IntegerField(default=0)
     session = models.ForeignKey(Session, related_name='climbs', on_delete=models.CASCADE)
     owner = models.ForeignKey('auth.User', related_name='user_climbs',on_delete=models.CASCADE)

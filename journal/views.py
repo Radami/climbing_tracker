@@ -9,7 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 
-from .models import Session, Climb, Grade
+from .models import Session, Climb, Grade, SessionPartner
 
 # Django views
 class SessionsIndexView(generic.ListView):
@@ -35,6 +35,11 @@ class SessionsDetailView(generic.DetailView):
         session = Session.objects.get(id=self.kwargs['pk'])
         context['grades'] = Grade.objects.all()
         context['climbs'] = session.climbs.all()
+        partners = session.partners.all()
+        if partners != None:
+            context['partners'] = partners
+        else:
+            context['partners'] = ""
         return context
 
 
@@ -62,6 +67,17 @@ def add_session(request):
     session.save()
 
     return HttpResponseRedirect(reverse('journal:detail', args=(session.id,)))
+
+def add_partner(request, session_id):
+    sessionPartner = SessionPartner()
+
+    sessionPartner.session = get_object_or_404(Session, pk=session_id)
+    sessionPartner.displayName = request.POST['displayName']
+
+    sessionPartner.save()
+
+    return HttpResponseRedirect(reverse('journal:detail', args=(sessionPartner.session.id,)))
+
 
 def sign_up(request):
     context = {}
@@ -91,6 +107,8 @@ def add_climb(request):
     climb.save()
 
     return HttpResponseRedirect(reverse('journal:detail', args=(climb.session_id,)))
+
+
 
 def delete_climb(request):
     #TODO: validate permissions
