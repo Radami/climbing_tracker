@@ -26,8 +26,7 @@ SECRET_KEY = '_ql^+60vzxg%8eku@a&xtot#7t^u0si@&(0)^s)=16nad-#$t9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1',
-                 'whispering-plateau-54906.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -82,7 +81,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'climbing_tracker',
-        'USER': 'climbing_tracker',
+        'USER': 'radu',
         'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT': ''

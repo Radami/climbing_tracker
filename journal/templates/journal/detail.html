@@ -1,139 +1,120 @@
-<!DOCTYPE html>
-<html lang="en">
-    {% load static %}
-
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- Bootstrap CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-        <!-- JQuery -->
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <!-- Internal CSS -->
-        <link rel="stylesheet" type="text/css" href="{% static 'journal/style.css' %}">
-        <title>Climbing Tracker</title>
-    </head>
-
-    <body>
-        <main>
-            <div class="container-md">
-                <div class="row">
-                    <div class="col-sm-8"><h1>{{ session.center }}</h1></div>
-                    <div class="col-sm-4"><h2>{{ session.date|date:"D d M Y" }}</h2></div>
-                </div>
-                <hr \>
-            </div>
-            <div class="container-md">
-                <div class="row">
-                    <div class="col-sm-8">
-                        <h3>Partners: 
-                            {% for partner in partners.all %}
-                                {{ partner.displayName }} 
-                            {% endfor %}
-                        </h3>
-                        <form action="{% url 'journal:add_partner' session.id %}" method="post">
-                            {% csrf_token %}
-                            <input type="text" id="displayName" name="displayName">  
-                            <input type="submit" value="Add">
-                        </form>
-                    </div>
-                    <div class="col-sm-2">
-                        <h3> Rating: {{ session.rating }} </h3>
-                    </div>
-                    <div class="col-sm-2">
-                        <form action="{% url 'journal:rate_session' session.id %}" method="post">
-                            {% csrf_token %}
-                
-                            <input type="range" id="rating" name="rating" min="1" max="10" 
-                                    oninput="document.getElementById('ratingLabel').innerHTML = this.value;">
-                            <em id="ratingLabel">{{ session.rating }}</em>
-                
-                            <input type="submit" value="Rate">
-                        </form>
-                    </div>
-                </div>
-                <div class="row">
-                    
-                </div>
-            </div>
-            
-            <div class="container-md">
-                <h3>{{ climbs.all|length }} Climbs</h3>
-                <div class="table-responsive-md">
-                    <table class="table table-striped table-sm">
-                        <colgroup> 
-                            <col class="col-md-1">
-                            <col class="col-md-1">
-                            <col class="col-md-1">
-                            <col class="col-md-1">
-                            <col class="col-md-1">
-                            <col class="col-md-6">
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Grade</th>
-                                <th>Type</th>
-                                <th>Takes</th>
-                                <th>Rating</th>
-                                <th>Comments</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for climb in climbs.all %}
-                            <tr>
-                                <td>{{ forloop.counter }}</td>
-                                <td>{{ climb.grade }}</td>
-                                <td>{{ climb.climb_type }}</td>
-                                <td>{{ climb.takes }}</td>
-                                <td>{{ climb.rating }}</td>
-                                <td>{{ climb.comments }}</td>
-                                <td>
-                                    <form action="{% url 'journal:delete_climb' %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="hidden" id="climb_id" name="climb_id" value="{{ climb.id }}">
-                                        <input type="hidden" id="session_id" name="session_id" value="{{ session.id }}">
-                                        <input type="submit" value="Delete">
-                                    </form>
-                                </td>
-                            <tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="container-md">
-                <form id="add_climb" action="{% url 'journal:add_climb' %}" method="post">
-                    {% csrf_token %}
-                    <label for="grade">Grade</label>
-                    <select id="grade" name="grade" form="add_climb">
-                    {% for grade in grades.all %}
-                        <option value="{{ grade.label }}">{{ grade.label }}</option>
+{% extends "journal/base.html" %}
+{% block content %}
+    <div class="container-md">
+        <div class="row">
+            <div class="col-sm-8"><h1>{{ session.center }}</h1></div>
+            <div class="col-sm-4"><h2>{{ session.date|date:"D d M Y" }}</h2></div>
+        </div>
+        <hr \>
+    </div>
+    <div class="container-md">
+        <div class="row">
+            <div class="col-sm-8">
+                <h3>Partners: 
+                    {% for partner in partners.all %}
+                        {{ partner.displayName }} 
                     {% endfor %}
-                    </select>
-                    <label for="climb_type">Type</label>
-                    <select id="climb_type" name="climb_type">
-                        <option value="Flash">Flash</option> 
-                        <option value="Redpoint">Redpoint</option>
-                        <option value="Dogged">Dogged</option>
-                        <option value="Failed">Failed</option>
-                    </select>
-                    <label for="rating">Rating</label>
-                    <select id="rating" name="rating" form="add_climb">
-                        <option value="1">1</option><option value="2">2</option><option value="3">3<option value="4">4</option><option value="5">5</option>
-                        <option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option>
-                    </select>
-                    <input type="hidden" id="session" name="session" value="{{ session.id }}">
-                    
-                    <label for="takes">Takes</label>
-                    <input type="number" id="takes" name="takes" min="0" value="0">
-                    <label for="comments">Comments</label>
-                    <input type="text" id="comments" name="comments">  
+                </h3>
+                <form action="{% url 'journal:add_partner' session.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="text" id="displayName" name="displayName">  
                     <input type="submit" value="Add">
-              </form>
-              </div>
-        </main>
-    </body>
-</html>
+                </form>
+            </div>
+            <div class="col-sm-2">
+                <h3> Rating: {{ session.rating }} </h3>
+            </div>
+            <div class="col-sm-2">
+                <form action="{% url 'journal:rate_session' session.id %}" method="post">
+                    {% csrf_token %}
+        
+                    <input type="range" id="rating" name="rating" min="1" max="10" 
+                            oninput="document.getElementById('ratingLabel').innerHTML = this.value;">
+                    <em id="ratingLabel">{{ session.rating }}</em>
+        
+                    <input type="submit" value="Rate">
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            
+        </div>
+    </div>
+    
+    <div class="container-md">
+        <h3>{{ climbs.all|length }} Climbs</h3>
+        <div class="table-responsive-md">
+            <table class="table table-striped table-sm">
+                <colgroup> 
+                    <col class="col-md-1">
+                    <col class="col-md-1">
+                    <col class="col-md-1">
+                    <col class="col-md-1">
+                    <col class="col-md-1">
+                    <col class="col-md-6">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Grade</th>
+                        <th>Type</th>
+                        <th>Takes</th>
+                        <th>Rating</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for climb in climbs.all %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ climb.grade }}</td>
+                        <td>{{ climb.climb_type }}</td>
+                        <td>{{ climb.takes }}</td>
+                        <td>{{ climb.rating }}</td>
+                        <td>{{ climb.comments }}</td>
+                        <td>
+                            <form action="{% url 'journal:delete_climb' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" id="climb_id" name="climb_id" value="{{ climb.id }}">
+                                <input type="hidden" id="session_id" name="session_id" value="{{ session.id }}">
+                                <input type="submit" value="Delete">
+                            </form>
+                        </td>
+                    <tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="container-md">
+        <form id="add_climb" action="{% url 'journal:add_climb' %}" method="post">
+            {% csrf_token %}
+            <label for="grade">Grade</label>
+            <select id="grade" name="grade" form="add_climb">
+            {% for grade in grades.all %}
+                <option value="{{ grade.label }}">{{ grade.label }}</option>
+            {% endfor %}
+            </select>
+            <label for="climb_type">Type</label>
+            <select id="climb_type" name="climb_type">
+                <option value="Flash">Flash</option> 
+                <option value="Redpoint">Redpoint</option>
+                <option value="Dogged">Dogged</option>
+                <option value="Failed">Failed</option>
+            </select>
+            <label for="rating">Rating</label>
+            <select id="rating" name="rating" form="add_climb">
+                <option value="1">1</option><option value="2">2</option><option value="3">3<option value="4">4</option><option value="5">5</option>
+                <option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option>
+            </select>
+            <input type="hidden" id="session" name="session" value="{{ session.id }}">
+            
+            <label for="takes">Takes</label>
+            <input type="number" id="takes" name="takes" min="0" value="0">
+            <label for="comments">Comments</label>
+            <input type="text" id="comments" name="comments">  
+            <input type="submit" value="Add">
+        </form>
+        </div>
+{% endblock %}
