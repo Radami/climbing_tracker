@@ -116,14 +116,20 @@ def add_climb(request):
 
     return HttpResponseRedirect(reverse('journal:detail', args=(climb.session_id,)))
 
-
-
 def delete_climb(request):
     #TODO: validate permissions
     climb = Climb.objects.get(id=request.POST['climb_id'])
     climb.delete()
 
     return HttpResponseRedirect(reverse('journal:detail', args=(climb.session_id,)))
+
+def all_climbs(request):
+    context = {}
+    return render(request, 'journal/all_climbs.html', context)
+
+def dashboard(request):
+    context = {}
+    return render(request, 'journal/dashboard.html', context)
 
 # Method based views
 # def index(request):

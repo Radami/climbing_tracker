@@ -30,7 +30,10 @@
                         <a class="nav-link active" aria-current="page" href="{% url 'journal:index' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Dashboard</a>
+                        <a class="nav-link active" aria-current="page" href="{% url 'journal:all_climbs' %}">All climbs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'journal:dashboard' %}">Dashboard</a>
                     </li>
                     </ul>
                 </div>
