@@ -22,6 +22,14 @@ class SessionsIndexView(generic.ListView):
     def get_queryset(self):
         """Return the last five climbing sessions"""
         return Session.objects.order_by('-date')[:5]
+    
+    def get_context_data(self, **kwargs):
+        context = super(SessionsIndexView, self).get_context_data(**kwargs)
+        best_session = Session.objects.order_by('-rating')[0]
+        context['best_session'] = {}
+        context['best_session']['center'] = best_session.center
+        context['best_session']['rating'] = best_session.rating
+        return context
 
 
 class SessionsDetailView(generic.DetailView):

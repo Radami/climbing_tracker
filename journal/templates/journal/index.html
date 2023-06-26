@@ -1,44 +1,72 @@
 {% extends "journal/base.html" %}
 {% block content %}
-    <div class="container-fluid">
+<div class="container-md">
+    <div class="flex-row">
         <h1>Climbing Tracker for {{user}}</h1>
-        {% if latest_sessions %}
-        <div class="row">
-            <h2>Last climb</h2>
+    </div>
+    
+    <div class="flex-row border border-dark rounded">
+        <div class="d-sm-flex justify-content-center bg-secondary">
+            <form action="{% url 'journal:add_session' %}" method="post">
+            {% csrf_token %}
+            <div class="flex-row bg-secondary">
+                <label>Center</label>
+                <input type="text" id="center" name="center">
+            </div>
+            <div class="flex-row bg-secondary">
+                <label>Date</label>
+                <input type="date" id="date" name="date">
+            </div>
+            <div class="flex-row bg-secondary">
+                <label>Rating</label>
+                <input type="rating" id="rating" name="rating">
+            </div>
+            <div class="flex-row bg-secondary">
+                <div class="d-sm-flex justify-content-center">
+                    <input type="submit" value="Add">
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="flex-row"><div class="p-2 bd-dark"></div></div>
+
+    {% if latest_sessions %}
+    <div class="d-flex bd-highlight">
+        <div class="p-2 w-50 justify-content-center bg-secondary border border-dark rounded">
+            <h2>Last session</h2>
             <div class="col">
-                <a href={% url 'journal:detail' latest_sessions.0.id %}>{{ latest_sessions.0 }}</a></li>
+                <a class="text-white" href={% url 'journal:detail' latest_sessions.0.id %}>{{ latest_sessions.0 }}</a></li>
             </div>
         </div>
-        <div class="row">
+        <div class="p-2 w-10"><div class="w-50"></div></div>
+        <div class="p-2 w-50 justify-content-center bg-secondary border border-dark rounded">
+            <h2>Best climb</h2>            
+           
+        </div>
+    </div>
+
+    <div class="flex-row"><div class="p-2 bd-dark"></div></div>
+
+    <div class="d-flex bd-highlight">
+        <div class="p-2 w-50 justify-content-center bg-secondary border border-dark rounded">
             <h2>Last month</h2>
-            <div class="col">
-                {% if latest_sessions %}
-                <ul>
-                {% for session in latest_sessions %}
-                    <li><a href={% url 'journal:detail' session.id %}>{{ session }}</a></li>
-                {% endfor %}
-                </ul>
-                {% else %}
-                    <p>No sessions are available.</p>
-                {% endif %}
-            </div>
+            <ul>
+            {% for session in latest_sessions %}
+                <li><a class="text-white" href={% url 'journal:detail' session.id %}>{{ session }}</a></li>
+            {% endfor %}
+            </ul>
         </div>
-        {% else %}
-            <p>No sessions are available.</p>
-        {% endif %}
+        <div class="p-2 w-10"><div class="w-50"></div></div>
+        <div class="p-2 w-50 justify-content-center bg-secondary border border-dark rounded">
+            <h2>Best session</h2>            
+            <p>{{ best_session.center }} @ {{ best_session.rating }}</p> 
+        </div>
     </div>
+    {% else %}
+        <p>No sessions are available.</p>
+    {% endif %}
+</div>
 
-    <div class="container-md">
-        <form action="{% url 'journal:add_session' %}" method="post">
-        {% csrf_token %}
-        <label>Center</label>
-        <input type="text" id="center" name="center">
-        <label>Date</label>
-        <input type="date" id="date" name="date">
-        <label>Rating</label>
-        <input type="rating" id="rating" name="rating">
-
-        <input type="submit" value="Add">
-    </form>
-    </div>
 {% endblock %}
