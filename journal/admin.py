@@ -6,7 +6,7 @@ from .models import Grade, Climb, Session, SessionPartner, Location
 admin.site.register(Grade)
 admin.site.register(Climb)
 admin.site.register(SessionPartner)
-admin.site.register(Location)
+
 
 class ClimbInline(admin.TabularInline):
     model = Climb
@@ -18,7 +18,14 @@ class SessionPartnerInline(admin.TabularInline):
 
 class LocationInLine(admin.TabularInline):
     model = Location
-    extra = 1
+    extra = 0
+
+class LocationAdmin(admin.ModelAdmin):
+
+   list_display = ['name', 'owner']
+    # list_display = [field.name for field in Location._meta.get_fields()]
+
+admin.site.register(Location, LocationAdmin)
 
 class SessionAdmin(admin.ModelAdmin):
     fieldsets = [

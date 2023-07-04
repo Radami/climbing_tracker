@@ -15,7 +15,7 @@ class Location(models.Model):
     owner = models.ForeignKey('auth.User', related_name='user_location', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return self.name + ' by ' + str(self.owner)
 
 class Session(models.Model):
     location = models.ForeignKey(Location, related_name='location', on_delete=models.CASCADE)

@@ -9,7 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 
-from .models import Session, Climb, Grade, SessionPartner
+from .models import Session, Climb, Grade, SessionPartner, Location
 
 # Django views
 class SessionsIndexView(generic.ListView):
@@ -25,10 +25,11 @@ class SessionsIndexView(generic.ListView):
     
     def get_context_data(self, **kwargs):
         context = super(SessionsIndexView, self).get_context_data(**kwargs)
-        best_session = Session.objects.order_by('-rating')[0]
+        sessions = Session.objects.order_by('-rating')
         context['best_session'] = {}
-        context['best_session']['center'] = best_session.center
-        context['best_session']['rating'] = best_session.rating
+        if len(sessions) > 0:    
+            context['best_session']['location'] = sessions[0].location
+            context['best_session']['rating'] = sessions[0].rating
         return context
 
 
@@ -63,11 +64,20 @@ def rate(request, session_id):
 def add_session(request):
     session = Session()
 
-    center = request.POST['center']
+    request_location = request.POST['location']
+    location = None
+    try:
+        location = Location.objects.get(name=request_location, owner=request.user)
+    except Location.DoesNotExist:
+        location = Location()
+        location.name = request_location
+        location.owner = request.user
+        location.save()
+
     rating = request.POST['rating']
     date = request.POST['date']
 
-    session.center = center
+    session.location = location
     session.rating = rating
     session.date = date
     session.owner_id = request.user.id 

@@ -10,8 +10,8 @@
             <form action="{% url 'journal:add_session' %}" method="post">
             {% csrf_token %}
             <div class="flex-row bg-secondary">
-                <label>Center</label>
-                <input type="text" id="center" name="center">
+                <label>Location</label>
+                <input type="text" id="location" name="location">
             </div>
             <div class="flex-row bg-secondary">
                 <label>Date</label>
@@ -61,7 +61,7 @@
         <div class="p-2 w-10"><div class="w-50"></div></div>
         <div class="p-2 w-50 justify-content-center bg-secondary border border-dark rounded">
             <h2>Best session</h2>            
-            <p>{{ best_session.center }} @ {{ best_session.rating }}</p> 
+            <p>{{ best_session.location }} @ {{ best_session.rating }}</p> 
         </div>
     </div>
     {% else %}
