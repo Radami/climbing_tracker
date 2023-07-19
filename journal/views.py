@@ -30,6 +30,8 @@ class SessionsIndexView(generic.ListView):
         if len(sessions) > 0:    
             context['best_session']['location'] = sessions[0].location
             context['best_session']['rating'] = sessions[0].rating
+
+        context['locations'] = Location.objects.all()
         return context
 
 
